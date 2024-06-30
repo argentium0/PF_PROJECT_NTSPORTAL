@@ -2,11 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-int employeSize=0;
-int testCenterSize=0;
-int candidateSize=0;
-int noOfTests=0;
-
 struct candidateData{
 	char candidateName[32];
 	int candidateFormNo;
@@ -432,7 +427,7 @@ void totalTestCenters(int* testCenterSize)
 
 void AllTestCenterInfo(struct testCenters d3[], int* testCenterSize)
 {
-	printf("\nWelcome to data display.Data of all the employees will be displayed here\n");
+	printf("\nWelcome to data display.Data of all the test centers will be displayed here\n");
 	if(*testCenterSize==0)
 	{
 		printf("\nNo records found!!\n\n");
@@ -584,7 +579,7 @@ void addTest(struct testInfo d4[100], int* noOfTests)
 		(*noOfTests)++;
 		printf("\n\t\tDATA ADDED SUCESSFULLY\n");
 	} else {
-		printf("\nMaximum amount of tests have been registered.Input exceeds size\n");
+		printf("\nMaximum amount of tests have been registered.Input exceeds size\a\n");
 	}
 }
 
@@ -649,7 +644,7 @@ void updateTestInfo(struct testInfo d4[], int* noOfTests)
 	} 
 	
 	else {
-		printf("Your input exceeds size");
+		printf("Your input exceeds size\a\n");
 	}
 }
 
@@ -707,7 +702,7 @@ void feeChecker(struct testInfo d4[], int* noOfTests)
 
 	if(testToCheckChargesQuery==0)
 	{
-		printf("\nRECORD NOT FOUND\n");
+		printf("\nRECORD NOT FOUND\a\n");
 	}
 	else
 	{
@@ -734,7 +729,7 @@ void testDateChecker(struct testInfo d4[],int* noOfTests)
 
 	if(testToCheckDateQuery==0)
 	{
-		printf("\nRECORD NOT FOUND\n");
+		printf("\nRECORD NOT FOUND\a\n");
 	}
 	else
 	{
@@ -761,7 +756,7 @@ void testLastDateChecker(struct testInfo d4[], int* noOfTests)
 
 	if(testToCheckLastDateQuery==0)
 	{
-		printf("\nRECORD NOT FOUND\n");
+		printf("\nRECORD NOT FOUND\a\n");
 	}
 	else
 	{
@@ -779,15 +774,60 @@ int shutdownTestInfoMenu()
 }
 
 
+//The following report operation assign a duty to an employee
+void report1(struct employeData d2[],struct testCenters d3[], int *testCenterSize, int *totalEmployes)
+{
+	int cardNoToAssignDuty;
+	printf("Enter the card no of the employee to assign a duty: ");
+	scanf("%d",&cardNoToAssignDuty);
+	printf("\n\n");
+
+	if(*totalEmployes==0)
+	{
+		printf("No employees found!!\a\a");
+	}
+
+	else
+	{
+
+	for(int i=0;i<*totalEmployes;i++)
+	{
+	if(cardNoToAssignDuty==d2[i].cardNo)
+	{
+			for(int j=0;j<*testCenterSize;j++)
+			{
+			if(stricmp(d2[j].city, d3[j].testCenterCity)==0)
+			{
+					printf("Test Center no %d in the city %s assigned for duty to\nName: %s\nCard no: %d\n\n",d3[i].testCenterNo,d3[i].testCenterCity,d2[i].employeName,d2[i].cardNo);
+					printf("\n\n\tASSIGNMENT SUCCESSFUL\n\n");
+					break;			
+			}
+		}
+		
+	}
+	else{
+
+		printf("No employee with the given card no found!!\a");
+	}
+		}
+			}
+}
+
+
 //Main Function
 int main()
 {
+	int employeSize=0;
+	int testCenterSize=0;
+	int candidateSize=0;
+	int noOfTests=0;
+
 	struct candidateData d1[100];
     struct employeData d2[100];
 	struct testCenters d3[100];
 	struct testInfo d4[100];
-	int choice2=1,choice3=1,choice1=1,choice4=1;
-	char choiceAtMainMenu='1';
+	int choice2=1,choice3=1,choice1=1,choice4=1,choice5=1;
+	char choiceAtMainMenu;
 
 //candidate files
 	FILE *f1;
@@ -828,7 +868,7 @@ int main()
 			for(int i=0;i<testCenterSize;i++)
 			{
 
-			fscanf(f5,"%d || %s || %s || %llu || %s || %s\n",&d3[i].testCenterNo,&d3[i].testCenterCity,&d3[i].testCenterSupervisor,&d3[i].testCenterSupervisorCNIC,&d3[i].buildingType,&d3[i].allocationDate);
+			fscanf(f5,"%d || %s || %s || %llu || %s || %s ||\n",&d3[i].testCenterNo,&d3[i].testCenterCity,&d3[i].testCenterSupervisor,&d3[i].testCenterSupervisorCNIC,&d3[i].buildingType,&d3[i].allocationDate);
 
 			}
 
@@ -850,32 +890,25 @@ int main()
 			fclose(f7);
 
 
+//START OF THE CREAM
 		while(1)
 		{
 
-		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE PORTAL\n\t\t\t\t\tHow can we help you!\n\n1.Candidate Menu\n2.Employee menu\n3.Test Center Menu\n4.Test Registration\nENTER 'E' TO EXIT\n\n");
+		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE PORTAL\n\t\t\t\t\tHow can we help you!\n\n1.Candidate Menu\n2.Employee menu\n3.Test Center Menu\n4.Test Registration\n5.Assign Duty\nENTER 'E' TO EXIT\n\n");
 		scanf("%c",&choiceAtMainMenu);
 
-		switch(choiceAtMainMenu)
-		{
 			
-			case 'E':
+			if(choiceAtMainMenu=='E' || choiceAtMainMenu== 'e')
+			{
 			printf("\nYOU HAVE EXIT THE PORTAL\n\n");
 			return 0;
+			}
 
-			case 'e':
-			printf("\nYOU HAVE EXIT THE PORTAL\n\n");
-			return 0;
-
-			default:
-			printf("INVALID INPUT!!");
-			break;
-
-			case '1':{
+			else if(choiceAtMainMenu=='1'){
 
 			while(choice1!=0)
 			{
-			printf("\"\n\n\t\t\tWelcome to the NTS CANDIDATE portal\n\nEnter a choice\n1.Add Candiadate Data\n2. Display total number of register records\n3. Display all information\n4. Update specific record\n5. Delete specific record\n6. Display topper student report\n7.Search a student\n8. Shutdown system\nEnter 0 to exit\n\n");
+			printf("\n\n\t\t\tWelcome to the NTS CANDIDATE portal\n\nEnter a choice\n1.Add Candiadate Data\n2. Display total number of register records\n3. Display all information\n4. Update specific record\n5. Delete specific record\n6. Display topper student report\n7.Search a student\n8. Shutdown system\nEnter 0 to exit\n\n");
 		scanf("%d",&choice1);
 
 		switch(choice1) 
@@ -979,16 +1012,21 @@ int main()
 			case 8:
 			shutdownCandidatePortal();
 			break;
+			
+			
+			
+			default:
+			printf("You entered invalid choice!!\a");
+		}
 			}
 			}
-			break;
 
 			
-		}
+		
 		
 
 
-		case '2':{
+		else if(choiceAtMainMenu=='2'){
 				
 				while(choice2!=0) {
 
@@ -996,6 +1034,7 @@ int main()
 		scanf("%d",&choice2);
 		
 		switch(choice2) {
+			
 			case 0:
 			break;
 			
@@ -1080,17 +1119,18 @@ int main()
 			break;
             
 			default:
-			printf("You entered invalid choice!!");
+			printf("You entered invalid choice!!\a");
 		}
 	} 
 	break;
 }
-		case '3':{
+		else if(choiceAtMainMenu=='3'){
 
 			while(choice3!=0) {
 		printf("\n\n\t\t\tWelcome to the NTS Test Center portal\n\nEnter a choice\n1.Add test Center\n2. Display total number of registered test centers\n3. Display all test centers information\n4. Update specific test center record\n5. Delete specific test center record\n6. Supervisor at the centre\n7.Total test centers in city\n8. Shutdown system\nEnter 0 to exit\n\n");
 		scanf("%d",&choice3);
 		switch(choice3) {
+			
 			case 0:
 			break;
 			
@@ -1189,17 +1229,18 @@ int main()
 			break;
             
 			default:
-			printf("You entered invalid choice!!");
+			printf("You entered invalid choice!!\a");
 		}
 	} 
 	break;
 }
 
-			case '4':{
+			else if(choiceAtMainMenu=='4'){
 				while(choice4!=0) {
 		printf("\n\n\t\t\tWelcome to the NTS Test Registration portal\n\nEnter a choice\n1.Add test information\n2. Display total number of registered tests at time\n3. Display all test information\n4. Update specific test registeration record\n5. Delete specific test registration record\n6.Fee checker for the test \n7.Check test date\n8.Check Last date to apply\n9. Shutdown system\nEnter 0 to exit\n\n");
 		scanf("%d",&choice4);
 		switch(choice4) {
+			
 			case 0:
 			break;
 			
@@ -1300,16 +1341,48 @@ int main()
 			break;
             
 			default:
-			printf("You entered invalid choice!!");
+			printf("You entered an invalid choice!!\a");
+			
 		}
 	} 
 	break;
-
 			}
+
+			else if(choiceAtMainMenu=='5')
+			{
+				while(choice5!=0)
+				{
+					printf("\n\nPress 1 to assign duty\nPress 0 to Exit\n\n");
+					scanf("%d",&choice5);
+
+					switch (choice5)
+					{
+					case 0:
+					break;
+
+					case 1:
+					report1(d2,d3,&testCenterSize,&employeSize);
+					break;
+					
+					default:
+					printf("\n\nINVALID CHOICE!!");
+					break;
+					}
+				}
+				
+			}
+
+	else
+	{
+	printf("You entered invalid choice!!\a");
+	}
+
 		}
+
+		
 		
 			
-}
+
 							
 
 	return 0;
