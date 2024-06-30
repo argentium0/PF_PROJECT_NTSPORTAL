@@ -49,7 +49,7 @@ void addcandidateData(struct candidateData d1[100],int* candidateSize) {
 	if(*candidateSize<100) {
 		
 		printf("\nWelcome to data entry.here you can add your data\n");
-		printf("\nEnter candidate name: ");
+		printf("Enter candidate name: ");
 		scanf("%s",&d1[*candidateSize].candidateName);
 		printf("Enter candidate NTS form no: ");
 		scanf("%d",&d1[*candidateSize].candidateFormNo);
@@ -774,15 +774,16 @@ int shutdownTestInfoMenu()
 }
 
 
-//The following report operation assign a duty to an employee
-void report1(struct employeData d2[],struct testCenters d3[], int *testCenterSize, int *totalEmployes)
+//The following report operation assigns a duty to an employee
+void report1(struct employeData d2[],struct testCenters d3[], int *testCenterSize, int *employeSize)
 {
 	int cardNoToAssignDuty;
+	FILE *f10;
 	printf("Enter the card no of the employee to assign a duty: ");
 	scanf("%d",&cardNoToAssignDuty);
 	printf("\n\n");
 
-	if(*totalEmployes==0)
+	if(*employeSize==0)
 	{
 		printf("No employees found!!\a\a");
 	}
@@ -790,7 +791,7 @@ void report1(struct employeData d2[],struct testCenters d3[], int *testCenterSiz
 	else
 	{
 
-	for(int i=0;i<*totalEmployes;i++)
+	for(int i=0;i<*employeSize;i++)
 	{
 	if(cardNoToAssignDuty==d2[i].cardNo)
 	{
@@ -800,7 +801,12 @@ void report1(struct employeData d2[],struct testCenters d3[], int *testCenterSiz
 			{
 					printf("Test Center no %d in the city %s assigned for duty to\nName: %s\nCard no: %d\n\n",d3[i].testCenterNo,d3[i].testCenterCity,d2[i].employeName,d2[i].cardNo);
 					printf("\n\n\tASSIGNMENT SUCCESSFUL\n\n");
-					break;			
+	
+					f10=fopen("duties.txt","w");
+					fprintf(f10,"%d || %s || %s || %d\n", d3[j].testCenterNo, d3[j].testCenterCity, d2[j].employeName, d2[j].cardNo);
+					fclose(f10);
+					break;	
+							
 			}
 		}
 		
@@ -811,6 +817,99 @@ void report1(struct employeData d2[],struct testCenters d3[], int *testCenterSiz
 	}
 		}
 			}
+}
+
+//The following report helps students apply for any test 
+void report2(struct candidateData d1[],struct testInfo d4[],int *candidateSize, int *noOfTests)
+{
+	FILE *f12;
+	int formNoToApply;
+	char testToApply[32];
+	int check007=0;
+	int check006=0;
+	printf("Enter the NTS form no of candidate: ");
+	scanf("%d",&formNoToApply);
+
+for(int i=0;i<*candidateSize;i++)
+{
+	if(formNoToApply==d1[i].candidateFormNo)
+	{
+		check006++;
+		printf("\nWelcome %s\nEnter the name of test you want to apply: ",d1[i].candidateName);
+		scanf("%s",&testToApply);
+
+		for(int j=0;j<*noOfTests;j++)
+		{
+		if(stricmp(testToApply , d4[i].testName)==0)
+		{
+			check007++;
+			printf("\n\nAPPLICATION SUCESSFUL\n\n");
+			printf("Name: %s\nForm No: %d\nTest: %s\nTest Date: %s\nPending Charges: %d\n\n",d1[j].candidateName,d1[j].candidateFormNo,d4[j].testName,d4[j].testDate,d4[j].testCharges);
+			
+			f12=fopen("testApplications.txt","w");
+					fprintf(f12,"%s || %d || %s || %s || %d ||\n",d1[j].candidateName,d1[j].candidateFormNo,d4[j].testName,d4[j].testDate,d4[j].testCharges);
+					fclose(f12);
+			
+			
+			break;
+				}
+			}
+	}
+	}
+if(check006==0)
+{
+	printf("\nNo candidate with the given form no found!!\a");
+}
+else{
+	if(check007==0)
+	{
+		printf("\nTest not found!!\a\n");
+		}
+	}
+}
+
+//The following report helps us search for the nearest test center
+void report3(struct candidateData d1[],struct testCenters d3[],int *candidateSize,int *testCenterSize)
+{
+	int formNoToFind;
+	int check008=0,check009=0;
+	char cityToFindCenter[32];
+
+	printf("Enter form no: ");
+	scanf("%d",&formNoToFind);
+	
+	for(int i=0;i<*candidateSize;i++)
+	{
+			if(formNoToFind==d1[i].candidateFormNo)
+			{
+				check008++;
+				printf("Welcome %s\nEnter the city where you want to find test center: ",d1[i].candidateName);
+				scanf("%s",&cityToFindCenter);
+				
+				for(int j=0;j<*testCenterSize;j++)
+				{
+					if(stricmp(cityToFindCenter , d3[j].testCenterCity)==0)
+					{
+						check009++;
+						printf("\n\nTEST CENTER FOUND\nTest center number: %d\nTest center supervisor: %s\nTest Center building: %s\n",d3[j].testCenterNo,d3[j].testCenterSupervisor,d3[j].buildingType);
+						break;
+					}
+				}
+			}
+	}
+	if(check008==0)
+	{
+		printf("\nNo candidate with the given form no found!!\a");
+	}
+
+	else{
+
+		if(check009==0)
+		{
+			printf("\nTest center not found in the desired city!!\a\n");
+		}
+	}
+
 }
 
 
@@ -826,7 +925,7 @@ int main()
     struct employeData d2[100];
 	struct testCenters d3[100];
 	struct testInfo d4[100];
-	int choice2=1,choice3=1,choice1=1,choice4=1,choice5=1;
+	int choice2=1,choice3=1,choice1=1,choice4=1,choice5=1,choice6=1,choice7=1;
 	char choiceAtMainMenu;
 
 //candidate files
@@ -889,12 +988,35 @@ int main()
 
 			fclose(f7);
 
+//duties file
+	FILE *f9;
+	f9=fopen("duties.txt","w");
+
+				for(int j=0;j<noOfTests;j++)
+			{
+					fscanf(f9,"%d || %s || %s || %d\n", &d3[j].testCenterNo, &d3[j].testCenterCity, &d2[j].employeName, &d2[j].cardNo);
+
+			}
+
+			fclose(f9);
+
+//test application files
+			FILE *f11;
+					f11=fopen("testApplications.txt","w");
+
+			for(int i=0;i<candidateSize;i++)
+			{
+					
+					fscanf(f11,"%s || %d || %s || %s || %d ||\n",&d1[i].candidateName,&d1[i].candidateFormNo,&d4[i].testName,&d4[i].testDate,&d4[i].testCharges);
+					
+			}
+				fclose(f11);
 
 //START OF THE CREAM
 		while(1)
 		{
 
-		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE PORTAL\n\t\t\t\t\tHow can we help you!\n\n1.Candidate Menu\n2.Employee menu\n3.Test Center Menu\n4.Test Registration\n5.Assign Duty\nENTER 'E' TO EXIT\n\n");
+		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE PORTAL\n\t\t\t\t\tHow can we help you!\n\n1.Candidate Menu\n2.Employee menu\n3.Test Center Menu\n4.Test Registration\n5.Assign Duty\n6.Apply for test\n7.Search test center in city\nENTER 'E' TO EXIT\n\n");
 		scanf("%c",&choiceAtMainMenu);
 
 			
@@ -1122,7 +1244,6 @@ int main()
 			printf("You entered invalid choice!!\a");
 		}
 	} 
-	break;
 }
 		else if(choiceAtMainMenu=='3'){
 
@@ -1232,7 +1353,7 @@ int main()
 			printf("You entered invalid choice!!\a");
 		}
 	} 
-	break;
+	
 }
 
 			else if(choiceAtMainMenu=='4'){
@@ -1345,7 +1466,7 @@ int main()
 			
 		}
 	} 
-	break;
+
 			}
 
 			else if(choiceAtMainMenu=='5')
@@ -1367,6 +1488,55 @@ int main()
 					default:
 					printf("\n\nINVALID CHOICE!!");
 					break;
+					}
+				}
+				
+			}
+
+			else if(choiceAtMainMenu=='6')
+			{
+				while(choice6!=0)
+				{
+					printf("\n\nPress 1 to apply for test\nPress 0 to Exit\n\n");
+					scanf("%d",&choice6);
+
+					switch (choice6)
+					{
+					case 0:
+					break;
+
+					case 1:
+					report2(d1,d4,&candidateSize,&noOfTests);
+					break;
+					
+					default:
+					printf("\n\nINVALID CHOICE!!");
+					break;
+					}
+				}
+				
+			}
+			
+			else if(choiceAtMainMenu=='7')
+			{
+				while(choice7!=0)
+				{
+					printf("\n\nPress 1 to search center\nPress 0 to Exit\n\n");
+					scanf("%d",&choice7);
+
+					switch (choice7)
+					{
+					case 0:
+					break;
+
+					case 1:
+					report3(d1,d3,&candidateSize,&noOfTests);
+					break;
+					
+					default:
+					printf("\n\nINVALID CHOICE!!");
+					break;
+
 					}
 				}
 				
