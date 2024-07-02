@@ -765,6 +765,29 @@ void testLastDateChecker(struct testInfo d4[], int* noOfTests)
 	}
 }
 
+void serachTest(struct testInfo d4[], int* noOfTests)
+{
+	char testToFind[32];
+	int checkMaster=0;
+	printf("Enter the name test you want to find: ");
+	scanf("%s",&testToFind);
+
+	for(int i=0;i<*noOfTests;i++)
+	{
+	if(stricmp(testToFind,d4[i].testName)==0)
+	{
+		checkMaster++;
+		printf("TEST FOUND\n");
+		printf("Test name: %s\nMarks: %d\nCharges: %d\nLast Date to apply: %s\n",d4[i].testName, d4[i].totalMarks,d4[i].testCharges,d4[i].lastDateToApply);
+	}
+}
+
+if(checkMaster==0){
+	printf("\nTEST NOT AVAILABLE CURRENTLY!!\a\n");
+}
+
+}
+
 int shutdownTestInfoMenu()
 {
 
@@ -926,7 +949,11 @@ int main()
 	struct testCenters d3[100];
 	struct testInfo d4[100];
 	int choice2=1,choice3=1,choice1=1,choice4=1,choice5=1,choice6=1,choice7=1;
+	int superChoice;
 	int choiceAtMainMenu;
+	int choiceAtReportsMenu;
+	int choiceAtRecordsMenu;
+	int choiceAtSearchMenu;
 
 //candidate files
 	FILE *f1;
@@ -1013,24 +1040,38 @@ int main()
 				fclose(f11);
 
 //START OF THE CREAM
+
+do{
+
+		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE PORTAL\n\t\t\t\t\tHow can we help you!\n\n1.Go to Manage Data menus\n2.Search data\n3.Total no of registered records\n4.Meaningful reports\nENTER 0 TO EXIT\n\n");
+		scanf("%d",&superChoice);
+
+		if(superChoice==0)
+		{
+			printf("\nYou have exit the portal\n\n");
+			return 0;
+		}
+
+
+		else if(superChoice==1)
 		do
 		{
 
-		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE PORTAL\n\t\t\t\t\tHow can we help you!\n\n1.Candidate Menu\n2.Employee menu\n3.Test Center Menu\n4.Test Registration\n5.Assign Duty\n6.Apply for test\n7.Search test center in city\nENTER 0 TO EXIT\n\n");
+		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE MANAGE DATA PORTAL\n\t\t\t\t\tHow can we help you!\n\n1.Candidate Menu\n2.Employee menu\n3.Test Center Menu\n4.Tests menu\nENTER 0 TO EXIT\n\n");
 		scanf("%d",&choiceAtMainMenu);
 
 			
 			if(choiceAtMainMenu==0)
 			{
-			printf("\nYOU HAVE EXIT THE PORTAL\n\n");
-			return 0;
+			printf("\nYOU HAVE EXIT THE MANAGE DATA PORTAL\n\n");
+			break;
 			}
 
 			else if(choiceAtMainMenu==1){
 
 			while(choice1!=0)
 			{
-			printf("\n\n\t\t\tWelcome to the NTS CANDIDATE portal\n\nEnter a choice\n1.Add Candiadate Data\n2. Display total number of register records\n3. Display all information\n4. Update specific record\n5. Delete specific record\n6. Display topper student report\n7.Search a student\n8. Shutdown system\nEnter 0 to exit\n\n");
+			printf("\n\n\t\t\tWelcome to the NTS CANDIDATE portal\n\nEnter a choice\n1.Add Candiadate Data\n2. Display all information\n3. Update specific record\n4. Delete specific record\n5. Display topper student report\n6. Shutdown system\nEnter 0 to exit\n\n");
 		scanf("%d",&choice1);
 
 		switch(choice1) 
@@ -1059,27 +1100,12 @@ int main()
 			
 			}
 			break;
-			
-			
+
 			case 2:
-			{
-			totalCandidates(&candidateSize);
-
-			FILE *f2;
-			f2=fopen("candidates.txt", "w");
-
-			fprintf(f2,"%d\n\n", candidateSize);
-
-			fclose(f2);
-			
-			}
-			break;
-
-			case 3:
 			displayCandidateInfo(d1, &candidateSize);
 			break;
 
-			case 4:
+			case 3:
 			{
 
 			updateCandidate(d1, &candidateSize);
@@ -1103,7 +1129,7 @@ int main()
 			}
 			break;
 
-			case 5:
+			case 4:
 			{
 			deleteCandidateInfo(d1, &candidateSize);
 
@@ -1123,18 +1149,13 @@ int main()
 			}
 			break;
 
-			case 6:
+			case 5:
 			topperCandidate(d1, &candidateSize);
 			break;
 
-			case 7:
-			searchCandidate(d1, &candidateSize);
-			break;
-
-			case 8:
+			case 6:
 			shutdownCandidatePortal();
 			break;
-			
 			
 			
 			default:
@@ -1152,7 +1173,7 @@ int main()
 				
 				while(choice2!=0) {
 
-		printf("\n\n\t\t\tWelcome to the NTS EMPLOYEE portal\n\nEnter a choice\n1.Add data\n2. Display total number of register records\n3. Display all information\n4. Update specific record\n5. Delete specific record\n6. Search an employee\n7. Shutdown system\n8.Search all employees in a city\nEnter 0 to exit\n\n");
+		printf("\n\n\t\t\tWelcome to the NTS EMPLOYEE portal\n\nEnter a choice\n1. Add data\n2. Display all information\n3. Update specific record\n4. Delete specific record\n5. Shutdown system\n6.Search all employees in a city\nEnter 0 to exit\n\n");
 		scanf("%d",&choice2);
 		
 		switch(choice2) {
@@ -1181,14 +1202,10 @@ int main()
 			break;
 
             case 2:
-			totalEmployes(&employeSize);
-			break;
-
-            case 3:
 			displayEmployeInfo(d2, &employeSize);
 			break;
 
-			case 4:
+			case 3:
 			{
 			updateEmploye( d2, &employeSize);
 
@@ -1208,7 +1225,7 @@ int main()
 		}
 			break;
 
-			case 5:
+			case 4:
 			{
 			deleteEmploye(d2, &employeSize);
 
@@ -1228,15 +1245,11 @@ int main()
 			}
 			break;
 
-			case 6:
-			searchEmploye(d2, &employeSize);
-			break;
-
-			case 7:
+			case 5:
 			shutdownEmployeMenu();
 			break;
 
-			case 8:
+			case 6:
 			employesInCity(d2, &employeSize);
 			break;
             
@@ -1248,7 +1261,7 @@ int main()
 		else if(choiceAtMainMenu==3){
 
 			while(choice3!=0) {
-		printf("\n\n\t\t\tWelcome to the NTS Test Center portal\n\nEnter a choice\n1.Add test Center\n2. Display total number of registered test centers\n3. Display all test centers information\n4. Update specific test center record\n5. Delete specific test center record\n6. Supervisor at the centre\n7.Total test centers in city\n8. Shutdown system\nEnter 0 to exit\n\n");
+		printf("\n\n\t\t\tWelcome to the NTS Test Center portal\n\nEnter a choice\n1.Add test Center\n2. Display all test centers information\n3. Update specific test center record\n4. Delete specific test center record\n5. Supervisor at the centre\n6. Shutdown system\nEnter 0 to exit\n\n");
 		scanf("%d",&choice3);
 		switch(choice3) {
 			
@@ -1277,25 +1290,10 @@ int main()
 			break;
 
             case 2:
-			{
-			totalTestCenters(&testCenterSize);
-
-			//testCenter files
-
-			FILE *f6;
-			f6=fopen("testCenters.txt", "w");
-
-			fprintf(f6,"%d\n\n",testCenterSize);
-
-			fclose(f6);
-			}
-			break;
-
-            case 3:
 			AllTestCenterInfo(d3, &testCenterSize);
 			break;
 
-			case 4:
+			case 3:
 			{
 			updateTestCenter( d3, &testCenterSize);
 
@@ -1316,7 +1314,7 @@ int main()
 			}
 			break;
 
-			case 5:
+			case 4:
 			{
 			deleteTestCenter(d3, &testCenterSize);
 
@@ -1337,15 +1335,11 @@ int main()
 			}
 			break;
 
-			case 6:
+			case 5:
 			searchSupervisor(d3, &testCenterSize);
 			break;
 
-			case 7:
-			testCentersInCity(d3, &testCenterSize);
-			break;
-
-			case 8:
+			case 6:
 			shutdownTestCenterMenu();
 			break;
             
@@ -1358,7 +1352,7 @@ int main()
 
 			else if(choiceAtMainMenu==4){
 				while(choice4!=0) {
-		printf("\n\n\t\t\tWelcome to the NTS Test Registration portal\n\nEnter a choice\n1.Add test information\n2. Display total number of registered tests at time\n3. Display all test information\n4. Update specific test registeration record\n5. Delete specific test registration record\n6.Fee checker for the test \n7.Check test date\n8.Check Last date to apply\n9. Shutdown system\nEnter 0 to exit\n\n");
+		printf("\n\n\t\t\tWelcome to the NTS Test Registration portal\n\nEnter a choice\n1.Add test information\n2.Display all test information\n3. Update specific test registeration record\n4. Delete specific test registration record\n5.Fee checker for the test \n6.Check test date\n7.Check Last date to apply\n8. Shutdown system\nEnter 0 to exit\n\n");
 		scanf("%d",&choice4);
 		switch(choice4) {
 			
@@ -1386,24 +1380,10 @@ int main()
 			break;
 
             case 2:
-			{
-			totalNoOfTests(&noOfTests);
-
-			//testInfo files
-			FILE *f8;
-			f8=fopen("testInfo.txt", "w");
-
-			fprintf(f8,"%d\n\n", noOfTests);
-
-			fclose(f8);
-			}
-			break;
-
-            case 3:
 			allTestsInfo(d4, &noOfTests);
 			break;
 
-			case 4:
+			case 3:
 			{
 			updateTestInfo( d4, &noOfTests);
 			//testInfo files
@@ -1423,7 +1403,7 @@ int main()
 			}
 			break;
 
-			case 5:
+			case 4:
 			{
 				
 			deleteTestInfo(d4, &noOfTests);
@@ -1445,19 +1425,19 @@ int main()
 			break;
 	
 
-			case 6:
+			case 5:
 			feeChecker(d4, &noOfTests);
 			break;
 
-			case 7:
+			case 6:
 			testDateChecker(d4, &noOfTests);
 			break;
 
-			case 8:
+			case 7:
 			testLastDateChecker(d4, &noOfTests);
 			break;
 
-			case 9:
+			case 8:
 			shutdownTestInfoMenu();
 			break;
             
@@ -1467,11 +1447,135 @@ int main()
 		}
 	} 
 
-			}
+			}		
 
-			else if(choiceAtMainMenu==5)
+	else
+	{
+	printf("You entered invalid choice!!\a");
+	}
+
+		}
+		while (1);
+
+	else if(superChoice==2)
+	{
+		do{
+			printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE SERACH MENU\n\t\t\t\t\tHow can we help you!\n\n1.Search Candiadtes\n2.Search Employees\n3.Search Test Centers\n4.Search tests\nENTER 0 TO EXIT\n\n");
+		scanf("%d",&choiceAtSearchMenu);
+
+		switch (choiceAtSearchMenu)
+		{
+		case 0:
+		break;
+
+		case 1:
+		searchCandidate(d1, &candidateSize);
+		break;
+
+		case 2:
+		searchEmploye(d2, &employeSize);
+		break;
+
+		case 3:
+		testCentersInCity(d3, &testCenterSize);
+		break;
+
+		case 4:
+		serachTest(d4, &noOfTests);
+		break;
+		
+		default:
+		printf("\nINVALID CHOICE\a\n");
+		break;
+		
+		}
+		}while(choiceAtSearchMenu!=0);
+	}
+
+	else if(superChoice==3)
+	{
+		do{
+		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE RECORDS\n\t\t\t\t\tHow can we help you!\n\n1.Total no of Candiadtes\n2.Total no of Employees\n3.Total no of Test Centers\n4.Total no of tests\nENTER 0 TO EXIT\n\n");
+		scanf("%d",&choiceAtRecordsMenu);
+		
+		switch(choiceAtRecordsMenu)
+		{
+			case 0:
+			break;;
+
+			case 1:
+			{	
+			totalCandidates(&candidateSize);
+
+			FILE *f2;
+			f2=fopen("candidates.txt", "w");
+
+			fprintf(f2,"%d\n\n", candidateSize);
+
+			fclose(f2);
+			}
+			break;
+
+			case 2:
 			{
-				while(choice5!=0)
+			totalEmployes(&employeSize);
+				
+			}
+			break;
+
+			case 3:
+			{
+			totalTestCenters(&testCenterSize);
+
+			//testCenter files
+
+			FILE *f6;
+			f6=fopen("testCenters.txt", "w");
+
+			fprintf(f6,"%d\n\n",testCenterSize);
+
+			fclose(f6);
+			}
+			break;
+
+			case 4:
+			{
+			totalNoOfTests(&noOfTests);
+
+			//testInfo files
+			FILE *f8;
+			f8=fopen("testInfo.txt", "w");
+
+			fprintf(f8,"%d\n\n", noOfTests);
+
+			fclose(f8);
+			}
+			break;
+
+			default:
+			printf("\nINVALID CHOICE!!\a\n");
+			break;
+
+		}
+	}while(choiceAtRecordsMenu!=0);
+
+	}
+		
+	
+	else if(superChoice==4)
+	{
+		do{
+		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE REPORTS\n\t\t\t\t\tHow can we help you!\n\n1.Assign Duty to employee\n2.Apply for test\n3.Nearest test center checker\nENTER 0 TO EXIT\n\n");
+		scanf("%d",&choiceAtReportsMenu);
+
+		switch(choiceAtReportsMenu)
+		{
+			case 0:
+			break;
+
+			case 1:
+			{
+			while(choice5!=0)
 				{
 					printf("\n\nPress 1 to assign duty\nPress 0 to Exit\n\n");
 					scanf("%d",&choice5);
@@ -1489,11 +1593,11 @@ int main()
 					printf("\n\nINVALID CHOICE!!");
 					break;
 					}
-				}
-				
 			}
+			}
+			break;
 
-			else if(choiceAtMainMenu==6)
+			case 2:
 			{
 				while(choice6!=0)
 				{
@@ -1514,10 +1618,10 @@ int main()
 					break;
 					}
 				}
-				
 			}
-			
-			else if(choiceAtMainMenu==7)
+			break;
+
+			case 3:
 			{
 				while(choice7!=0)
 				{
@@ -1539,22 +1643,24 @@ int main()
 
 					}
 				}
-				
 			}
+			break;
 
-	else
-	{
-	printf("You entered invalid choice!!\a");
-	}
+			default:
+			printf("You entered an invalid choice!!\a");
+			break;
 
 		}
-		while (1);
-		
+	}while(choiceAtReportsMenu!=0);
 
-		
-		
+	}
+	
+	else{
+		printf("\nINVALID CHOICE!!\a");
+	}
 			
-
+	}
+	while(superChoice!=0);
 							
 
 	return 0;
