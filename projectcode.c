@@ -926,7 +926,7 @@ int main()
 	struct testCenters d3[100];
 	struct testInfo d4[100];
 	int choice2=1,choice3=1,choice1=1,choice4=1,choice5=1,choice6=1,choice7=1;
-	char choiceAtMainMenu;
+	int choiceAtMainMenu;
 
 //candidate files
 	FILE *f1;
@@ -1013,20 +1013,20 @@ int main()
 				fclose(f11);
 
 //START OF THE CREAM
-		while(1)
+		do
 		{
 
-		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE PORTAL\n\t\t\t\t\tHow can we help you!\n\n1.Candidate Menu\n2.Employee menu\n3.Test Center Menu\n4.Test Registration\n5.Assign Duty\n6.Apply for test\n7.Search test center in city\nENTER 'E' TO EXIT\n\n");
-		scanf("%c",&choiceAtMainMenu);
+		printf("\n\n\t\t\tWELCOME TO THE NATIONAL TESTING SERVICE PORTAL\n\t\t\t\t\tHow can we help you!\n\n1.Candidate Menu\n2.Employee menu\n3.Test Center Menu\n4.Test Registration\n5.Assign Duty\n6.Apply for test\n7.Search test center in city\nENTER 0 TO EXIT\n\n");
+		scanf("%d",&choiceAtMainMenu);
 
 			
-			if(choiceAtMainMenu=='E' || choiceAtMainMenu== 'e')
+			if(choiceAtMainMenu==0)
 			{
 			printf("\nYOU HAVE EXIT THE PORTAL\n\n");
 			return 0;
 			}
 
-			else if(choiceAtMainMenu=='1'){
+			else if(choiceAtMainMenu==1){
 
 			while(choice1!=0)
 			{
@@ -1148,7 +1148,7 @@ int main()
 		
 
 
-		else if(choiceAtMainMenu=='2'){
+		else if(choiceAtMainMenu==2){
 				
 				while(choice2!=0) {
 
@@ -1245,7 +1245,7 @@ int main()
 		}
 	} 
 }
-		else if(choiceAtMainMenu=='3'){
+		else if(choiceAtMainMenu==3){
 
 			while(choice3!=0) {
 		printf("\n\n\t\t\tWelcome to the NTS Test Center portal\n\nEnter a choice\n1.Add test Center\n2. Display total number of registered test centers\n3. Display all test centers information\n4. Update specific test center record\n5. Delete specific test center record\n6. Supervisor at the centre\n7.Total test centers in city\n8. Shutdown system\nEnter 0 to exit\n\n");
@@ -1356,7 +1356,7 @@ int main()
 	
 }
 
-			else if(choiceAtMainMenu=='4'){
+			else if(choiceAtMainMenu==4){
 				while(choice4!=0) {
 		printf("\n\n\t\t\tWelcome to the NTS Test Registration portal\n\nEnter a choice\n1.Add test information\n2. Display total number of registered tests at time\n3. Display all test information\n4. Update specific test registeration record\n5. Delete specific test registration record\n6.Fee checker for the test \n7.Check test date\n8.Check Last date to apply\n9. Shutdown system\nEnter 0 to exit\n\n");
 		scanf("%d",&choice4);
@@ -1469,7 +1469,7 @@ int main()
 
 			}
 
-			else if(choiceAtMainMenu=='5')
+			else if(choiceAtMainMenu==5)
 			{
 				while(choice5!=0)
 				{
@@ -1493,7 +1493,7 @@ int main()
 				
 			}
 
-			else if(choiceAtMainMenu=='6')
+			else if(choiceAtMainMenu==6)
 			{
 				while(choice6!=0)
 				{
@@ -1517,7 +1517,7 @@ int main()
 				
 			}
 			
-			else if(choiceAtMainMenu=='7')
+			else if(choiceAtMainMenu==7)
 			{
 				while(choice7!=0)
 				{
@@ -1548,6 +1548,8 @@ int main()
 	}
 
 		}
+		while (1);
+		
 
 		
 		
